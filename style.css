@@ -1,0 +1,105 @@
+
+
+.header{
+    width: 100vw;
+    height: 69px;
+    background: #EC362D;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 37px;
+    font-family: 'Roboto';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.criarNovoQuizz{
+    box-sizing: border-box;
+    width: 75vw;
+    height: 181px;
+    font-family: 'Roboto';
+    background: #FAFAFA;
+    border: 1px dashed #D5D5D5;
+    border-radius: 5px;
+    margin: 77px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 33px;
+}
+
+.textoAindaNaoCriou{
+    width: 250px;
+    height: 107px;
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #B9B9B9;
+}
+
+.botaoCriarNovoQuizz{
+    font-family: 'Roboto';
+    box-sizing: border-box;
+    width: 151px;
+    height: 40px;
+    background: #FAFAFA;
+    border: 1px dashed #EC362D;
+    border-radius: 50px;
+    font-weight: 400;
+    font-size: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #EC362D;
+}
+
+.boxTodosOsQuizzes{
+    height: 420px;
+    width: 75vw;
+    margin: 0 auto;
+}
+
+.todosQuizzes{
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: auto;
+}
+
+.quizzDoServidor{
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+}
+
+.tituloTodosOsQuizzes{
+    height: 23px;
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 20px;
+    color: #000000;
+    margin-bottom: 12px;
+}
+
+.imagemQuizzesDoServidor{
+    width: 340px;
+    height: 181px;
+    border-radius: 5px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.1%, #000000 100%), url(image.png);
+}
+
+.tituloDeCadaQuizzDoServidor{
+    color: #FFFFFF;
+    position: absolute;
+    bottom: 12px;
+    left: 18px;
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 19px;
+}
