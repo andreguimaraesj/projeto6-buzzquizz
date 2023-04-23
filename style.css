@@ -493,8 +493,8 @@ form input::placeholder {
   margin-top: 9px;
 }
 
-.esconder {
-  display: none;
+.escondido {
+  display: none !important;
 }
 
 @media (max-width: 614px) {

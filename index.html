@@ -87,100 +87,77 @@
         </div>
     </div>
 
-    <div class="add-quizz">
-        <div class="infos-basicas">
-          <h1>Comece pelo começo</h1>
-          <form>
-            <input type="text" placeholder="Título do seu quizz"/>
-            <input type="text" placeholder="URL da imagem do seu quizz"/>
-            <input type="number" placeholder="Quantidade de perguntas do quizz"/>
-            <input type="number" placeholder="Quantidade de níveis do quizz"/>
-          </form>
-          
-          <button onclick="validarInformacoes()">Prosseguir pra criar perguntas</button>
-        </div>
-     </div>
-     <div class="criar-perguntas esconder">
-        <h1>Crie suas perguntas</h1>
-  
-        <form class="esconder">
-          <div class="caixa 1">
-            <p>Pergunta</p>
-            <input type="text" class="texto-pergunta" placeholder="Texto da pergunta"/>
-            <input type="text" class="cor-fundo" placeholder="Cor de fundo da pergunta"/>
-          </div>
-          <div class="caixa 2">
-            <p>Resposta correta</p>
-            <input type="text" class="resposta-certa" placeholder="Resposta correta"/>
-            <input type="text" class="url-imagem" placeholder="URL da imagem" />
-          </div>
-          <div class="caixa 3">
-            <p>Respostas incorretas</p>
-            <input type="text" class="resposta-errada 1" placeholder="Resposta incorreta 1"/>
-            <input type="text" class="url-imagem" placeholder="URL da imagem 1" />
-          </div>
-          <div class="caixa 4">
-            <input type="text" class="resposta-errada 2" placeholder="Resposta incorreta 2"/>
-            <input type="text" class="url-imagem" placeholder="URL da imagem 2" />
-          </div>
-          <div class="caixa 5">
-            <input type="text" class="resposta-errada 3" placeholder="Resposta incorreta 3"/>
-            <input type="text" class="url-imagem" placeholder="URL da imagem 3" />
-          </div>
+    <div class="adicionar-quizz escondido">
+      <!-- Comece pelo começo -->
+      <div class="infos-basicas">
+        <h1>Comece pelo começo</h1>
+        <form>
+          <input
+            type="text"
+            class="titulo-quizz"
+            placeholder="Título do seu quizz"
+          />
+          <input
+            type="text"
+            class="url-quizz"
+            placeholder="URL da imagem do seu quizz"
+          />
+          <input
+            type="number"
+            class="qntd-perguntas"
+            placeholder="Quantidade de perguntas do quizz"
+          />
+          <input
+            type="number"
+            class="qntd-niveis"
+            placeholder="Quantidade de níveis do quizz"
+          />
         </form>
-        
-        <div class="espaco-perguntas">
-          <div class="caixa-pergunta" onclick="editarPergunta()">
-            <p>Pergunta 2</p>
-            <button><img src="/Vector.svg" /></button>
-          </div>
-  
-          <div class="caixa-pergunta" onclick="editarPergunta()">
-            <p>Pergunta 3</p>
-            <button><img src="/Vector.svg" /></button>
-          </div>
-        </div>
+        <button onclick="validarInformacoes()">
+          Prosseguir pra criar perguntas
+        </button>
+      </div>
+      <!-- Crie suas perguntas -->
+      <div class="criar-perguntas escondido">
+        <h1>Crie suas perguntas</h1>
+
+        <div class="espaco-perguntas"></div>
+        <!-- Botão Prosseguir -->
         <button class="prosseguir" onclick="validarPerguntas()">
           Prosseguir pra criar níveis
         </button>
       </div>
-      
-      <div class="criar-niveis esconder">
+
+      <!-- Crie os níveis -->
+      <div class="criar-niveis escondido">
         <h1>Agora, decida os níveis</h1>
-  
-        <form class="esconder">
-          <p>Nível 1</p>
-          <input type="text" class="titulo-quizz" placeholder="Título do nível" />
-          <input type="number" class="acerto-minimo" placeholder="% de acerto mínima"/>
-          <input type="text" class="url-nivel" placeholder="URL da imagem do nível"/>
-          <input type="text" class="descrição-nivel" placeholder="Descrição do nível"/>
-        </form>
-  
+
         <div class="espaco-niveis"></div>
-        <div class="caixa-nivel" onclick="editarPergunta()">
-          <p>Nível 2</p>
-          <button><img src="Vector.svg" /></button>
-        </div>
-        <div class="caixa-nivel" onclick="editarPergunta()">
-          <p>Nível 3</p>
-          <button><img src="Vector.svg" /></button>
-        </div>
+        <!-- Botão Finalizar-->
         <button class="finalizar" onclick="validarNiveis()">
           Finalizar quizz
         </button>
-
-        <div class="quizz-criado esconder">
-            <h1>Seu quizz está pronto!</h1>
-        <div class="quizz"> 
-            <img src=""/>
-            <div class="efeito-imagem-adicionar"></div>
-            <div class="titulo-quiz"></div>
-        </div>
-        <button class='acessar-quizz' onclick="verificarQuizz()" >Acessar Quizz</button>
-        <button class="voltar-home" onclick="voltarParaHome()">Voltar pra home</button>
-    
-        </div>
       </div>
+
+      <!-- Sucesso do quiz-->
+      <div class="quizz-criado escondido"></div>
+    </div>
+
+    <!-- TELA 3: RESPONDER QUIZZ -->
+    <div class="responda escondido">
+      <div class="imagem-topo"></div>
+
+      <div class="area-quizz"></div>
+
+      <div class="botoes-quizz">
+        <button onclick="reiniciarQuizz()" class="botao-reiniciarQuizz">
+          Reiniciar Quizz
+        </button>
+        <button onclick="voltarParaHome()" class="botao-home">
+          Voltar para home
+        </button>
+      </div>
+    </div>
 
 
 
