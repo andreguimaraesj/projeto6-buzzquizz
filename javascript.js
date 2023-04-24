@@ -105,12 +105,12 @@ const buzzquizzInput = ({ placeholder, type = "text", dataName, dataTest }) => `
 `;
 
 const questionForm = ({ i }) => `
-    <div class='container ${
+    <div data-test="level-ctn" class='container ${
       i === 1 ? "" : "close"
     }' data-identifier="question-form">
       <div class='container-title'>
         <h1 class='title'>Pergunta ${i}</h1>
-        <ion-icon onclick='expandButton(this)' data-identifier="expand" class='icon' name="create-outline"></ion-icon>
+        <ion-icon data-test="toggle" onclick='expandButton(this)' data-identifier="expand" class='icon' name="create-outline"></ion-icon>
       </div>
       <div class='question'>
         ${buzzquizzInput({
@@ -301,20 +301,26 @@ function levelForm({ i }) {
     <div class='container ${i === 1 ? "" : "close"}' >
       <div class='container-title'>
         <h1 class='title'>Nível ${i}</h1>
-        <ion-icon onclick='expandButton(this)' data-identifier="expand" class='icon' name="create-outline"></ion-icon>
+        <ion-icon data-test="toggle" onclick='expandButton(this)' data-identifier="expand" class='icon' name="create-outline"></ion-icon>
       </div>
-      ${buzzquizzInput({ placeholder: "Título do nível", dataName: "title" })}
+      ${buzzquizzInput({ 
+        placeholder: "Título do nível", 
+        dataName: "title",
+        dataTest: "level-input", })}
       ${buzzquizzInput({
         placeholder: "% de acerto mínima",
         dataName: "min-value",
+        dataTest: "level-percent-input",
       })}
       ${buzzquizzInput({
         placeholder: "URL da imagem do nível",
         dataName: "image",
+        dataTest: "level-img-input",
       })}
       ${buzzquizzTextArea({
         placeholder: "Descrição do nível",
         dataName: "text",
+        dataTest: "level-description-input",
       })}
     </div>
   `;
@@ -326,7 +332,7 @@ function renderLevelsForm() {
     formLevel.innerHTML += levelForm({ i: i + 1 });
   });
   formLevel.innerHTML += `
-    <button class='buzzquizz-button'>Finalizar Quizz</button>
+    <button data-test="finish" class='buzzquizz-button'>Finalizar Quizz</button>
   `;
 }
 
