@@ -260,3 +260,229 @@
 .buzzquizz-input:focus {
   outline-color: #ec362d;
 }
+
+.quizz-questions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.quizz-questions form .container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+  gap: 10px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+.quizz-questions form .container .container-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.quizz-questions form .container .container-title .icon {
+  display: none;
+  font-size: 26px;
+  color: #000;
+  cursor: pointer;
+}
+
+.quizz-questions form .container.close .container-title .icon {
+  display: initial;
+}
+
+.quizz-questions form .container .question,  
+.quizz-questions form .container .answers{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quizz-questions form .container .answers {
+  gap: 25px;
+}
+
+.quizz-questions form .container .answers .correct,
+.quizz-questions form .container .answers .incorrect {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+ 
+.quizz-questions form .container .title {
+  text-align: start;
+}
+
+.quizz-questions form .container.close > div:not(:first-child){
+  display: none;
+}
+
+.quizz-levels {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.quizz-levels #form-level {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
+}
+
+
+
+.quizz-levels #form-level .container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+  gap: 10px;
+}
+
+.quizz-levels #form-level .container .container-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quizz-levels #form-level .container .container-title .icon {
+  display: none;
+  font-size: 26px;
+  color: #000;
+  cursor: pointer;
+}
+
+.quizz-levels #form-level .container.close .container-title .icon  {
+  display: initial;
+}
+
+.quizz-levels #form-level .container.close > div:not(:first-child){
+  display: none;
+}
+
+.quizz-levels #form-level textarea {
+  height: 200px;
+  resize: vertical
+}
+
+.quizz-levels {
+  gap: 20px;
+}
+
+.quizz-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.quizz-success .container-img {
+  width: 100%;
+  display: flex;
+  position: relative;
+  border-radius: 5px;
+}
+
+.quizz-success .container-img .filter {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 5px;
+  position: absolute;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%), url(image.png);
+}
+
+.quizz-success .container-img img {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: calc(16/9);
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-group button {
+  padding: 20px 40px;
+  cursor: pointer;
+}
+
+.button-group button:nth-child(2) {
+  border: 0;
+  background: transparent;
+  padding: 10px;
+  color: #818181;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1100px) {
+  .container-create-quizz .quizz-init {
+    max-width: 600px;
+  }
+
+  .container-create-quizz .quizz-init .buzzquizz-form {
+    gap: 90px;
+  }
+
+  .buzzquizz-input {
+    padding: 15px 20px;
+  }
+
+  .container-create-quizz .quizz-questions {
+    max-width: 600px;
+  }
+
+  .container-create-quizz .quizz-levels {
+    max-width: 600px;
+  }
+}
+
+.no-quizzes {
+  margin: 146px auto 77px auto;
+  width: 1051px;
+  height: 181px;
+  border: 1px dashed #d5d5d5;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-quizzes h2 {
+  margin-bottom: 30px;
+  width: 250px;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
+  color: #b9b9b9;
+}
+
+.no-quizzes button {
+  cursor: pointer;
+  width: 151px;
+  height: 40px;
+  border: 1px dashed #ec362d;
+  border-radius: 50px;
+  background-color: #fafafa;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 25px;
+  color: #ec362d;
+}

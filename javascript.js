@@ -319,3 +319,233 @@ function levelForm({ i }) {
     </div>
   `;
 }
+
+function renderLevelsForm() {
+  formLevel.innerHTML = "";
+  quizz_config.levels.forEach((level, i) => {
+    formLevel.innerHTML += levelForm({ i: i + 1 });
+  });
+  formLevel.innerHTML += `
+    <button class='buzzquizz-button'>Finalizar Quizz</button>
+  `;
+}
+
+const isLevelTitle = (text) => text.trim().length >= 10;
+
+const isLevelMinValue = (number) => number >= 0 && number <= 100;
+
+const isDescriptionLevel = (text) => text.trim().length >= 30;
+
+function isLevelForm(levelForm) {
+  const title = levelForm.querySelector('input[data-name="title"]');
+  const image = levelForm.querySelector('input[data-name="image"]');
+  const text = levelForm.querySelector('textarea[data-name="text"]');
+  const minValue = levelForm.querySelector('input[data-name="min-value"]');
+  console.log(title);
+  if (
+    !(
+      isLevelTitle(title.value) &&
+      isLevelMinValue(minValue.value) &&
+      isDescriptionLevel(text.value) &&
+      isUrl(image.value)
+    )
+  )
+    return false;
+
+  return {
+    title: title.value,
+    image: image.value,
+    text: text.value,
+    minValue: Number(minValue.value),
+  };
+}
+
+function toggleDisable(e) {
+  console.log(e);
+  if (e.disabled === true) {
+    e.disabled = false;
+  } else {
+    e.disabled = true;
+  }
+}
+
+let formLevelWaiting = true;
+
+formLevel.onsubmit = (e) => {
+  e.preventDefault();
+  if (formLevelWaiting) {
+    formLevelWaiting = false;
+    let levels = [];
+    const inputsContainer = formLevel.querySelectorAll(".container");
+
+    for (let i = 0; i < inputsContainer.length; i++) {
+      const level = isLevelForm(inputsContainer[i]);
+
+      if (!level) {
+        alert("Preencha os dados corretamente");
+        levels = [];
+        formLevelWaiting = true;
+        return;
+      }
+
+      levels.push(level);
+    }
+
+    const minValues = levels.map(({ minValue }) => minValue);
+    const UniqueMinValues = minValues.filter(
+      (value, i, array) => array.indexOf(value) === i
+    );
+
+    if (minValues.length !== UniqueMinValues.length) {
+      alert("Preencha os dados corretamente");
+      formLevelWaiting = true;
+      return;
+    }
+
+    if (!minValues.includes(0)) {
+      alert("Preencha os dados corretamente");
+      formLevelWaiting = true;
+      return;
+    }
+
+    quizz_config.levels = levels;
+    createQuizzAPI((res) => {
+      const items = localStorage.quizzes
+        ? JSON.parse(localStorage.quizzes)
+        : [];
+      items.push(res.data);
+      localStorage.setItem("quizzes", JSON.stringify(items));
+      showSuccessQuizz();
+      formLevelWaiting = true;
+    });
+  }
+};
+
+
+
+let quizz_config = {};
+
+const isTitle = (title) => title.length >= 20 && title.length <= 65;
+const isUrl = (url) => {
+  const regexURL =
+    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%.\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%\+.~#?&\/=]*)$/;
+  return regexURL.test(url);
+};
+const isQuestionNumber = (questionNumber) =>
+  Number(questionNumber) >= 3 && /^[0-9]+$/.test(questionNumber);
+const isLevelNumber = (levelNumber) =>
+  Number(levelNumber) >= 2 && /^[0-9]+$/.test(levelNumber);
+
+const initValidations = {
+  title: isTitle,
+  image: isUrl,
+  questions: isQuestionNumber,
+  levels: isLevelNumber,
+};
+
+function toggleHideElement(element) {
+  element.classList.toggle("hide");
+}
+
+function showCreateQuizzQuestions() {
+  toggleHideElement(document.querySelector(".quizz-init"));
+  toggleHideElement(document.querySelector(".quizz-questions"));
+
+  renderQuestionForms();
+}
+
+
+function showSuccessQuizz() {
+  document.querySelector(".quizz-levels").classList.add("hide");
+  const quizzSuccess = document.querySelector(".quizz-success");
+  quizzSuccess.classList.remove("hide");
+  let quizz = JSON.parse(localStorage.quizzes);
+  quizz = quizz[quizz.length - 1];
+  quizzSuccess.querySelector("img").src = quizz.image;
+  quizzSuccess.querySelector("h1").textContent = quizz.title;
+}
+
+function viewQuizz() {
+  let quizz = JSON.parse(localStorage.quizzes);
+  quizz = quizz[quizz.length - 1];
+  quizzToAnswer = quizz;
+  loadQuizzScreen();
+}
+
+function backToHome() {
+  window.location.reload();
+}
+
+function createQuizzAPI(fn) {
+  const URL = "https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes";
+
+  axios
+    .post(URL, quizz_config)
+    .then((res) => {
+      fn(res);
+    })
+    .catch((e) => console.log(e));
+}
+
+showCreateQuizz();
+
+function reload() {
+    window.location.reload();
+  }
+
+  function directThirdPage() {
+    document.querySelector(".container-quizz-list").classList.add("hide");
+    document.querySelector(".container-create-quizz").classList.remove("hide");
+}
+  
+let allQuizzes = {};
+
+function directSecondPage(id) {
+    quizzToAnswer = allQuizzes[id];
+    loadQuizzScreen();
+}
+
+const request = axios.get("https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes");
+
+request.then(listServerQuizzes);
+
+let userQuizzes;
+let userIDs = [];
+
+if (localStorage.length !== 0) {
+    userQuizzes = JSON.parse(localStorage.quizzes);
+    userIDs = userQuizzes.map((quizz) => {return quizz.id});
+
+    document.querySelector(".no-quizzes").classList.add("hide");
+    document.querySelector(".your-quizzes").classList.remove("hide");
+
+    let listUser = "";
+    for (let card of userQuizzes) {
+        listUser += `<figure data-test="my-quiz" onclick="directSecondPage(${card.id})" data-identifier="quizz-card">
+                         <img src="${card.image}" alt="Imagem não suportada ou indisponível"/>
+                         <figcaption>
+                             ${card.title}
+                         </figcaption>
+                     </figure>`;
+
+        allQuizzes[card.id] = card;
+    }
+    document.querySelector(".your-quizzes div").innerHTML = listUser;
+}
+
+function listServerQuizzes(response) {
+    let listAll = "";
+    for (let card of response.data) {
+        if (!userIDs.includes(card.id)) {
+            listAll += `<figure data-test="others-quiz" onclick="directSecondPage(${card.id})" data-identifier="quizz-card">
+                            <img src="${card.image}" alt="Imagem não suportada ou indisponível"/>
+                            <figcaption>
+                                ${card.title}
+                            </figcaption>
+                        </figure>`;
+
+            allQuizzes[card.id] = card;
+        }
+    }
+    document.querySelector(".all-quizzes div").innerHTML = listAll;
+}
