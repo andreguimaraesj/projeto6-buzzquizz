@@ -549,3 +549,207 @@ function listServerQuizzes(response) {
     }
     document.querySelector(".all-quizzes div").innerHTML = listAll;
 }
+
+function comparador() {
+  return Math.random() - 0.5;
+}
+
+
+let idDelayScroll = 0;
+let flagScroll = false;
+
+let boxQuizz;
+let correctQuizzAnswers = [];
+let numberOfQuestions = 0;
+let numberOfQuestionsAnswered = 0;
+let scoreQuizz = 0;
+let quizzToAnswer = 0;
+
+
+function loadQuizzScreen() {
+
+  correctQuizzAnswers = [];
+  numberOfQuestions = quizzToAnswer.questions.length;
+  numberOfQuestionsAnswered = 0;
+  scoreQuizz = 0;
+
+  const screenQuizz = document.querySelector(".container-answer-quizz");
+  screenQuizz.classList.remove("hide");
+
+  const screenList = document.querySelector(".container-quizz-list");
+  screenList.classList.add("hide");
+  const screenCreate = document.querySelector(".container-create-quizz");
+  screenCreate.classList.add("hide");
+
+  renderQuizzHeader(screenQuizz);
+
+  boxQuizz = document.querySelector(".box-quizz-questions");
+  quizzToAnswer.questions.forEach(renderQuestions);
+  preLoadResult();
+}
+
+
+function renderQuizzHeader(screenQuizzElement) {
+  screenQuizzElement.innerHTML = `
+  <div data-test="banner" class="quizz-header" id="quizz-header">
+    <h2 class="quizz-title">${quizzToAnswer.title}</h2>
+  </div>
+  <section data-test="question" class="box-quizz-questions">
+  </section>
+  `;
+
+  const imgBackground = document.getElementById("quizz-header");
+  imgBackground.style.background = `linear-gradient(rgba(0, 0, 0, 0.57), rgba(0, 0, 0, 0.57)), url(${quizzToAnswer.image})`;
+  imgBackground.style.backgroundRepeat = "no-repeat";
+  imgBackground.style.backgroundAttachment = "scroll";
+  imgBackground.style.backgroundSize = "cover";
+  imgBackground.style.backgroundPosition = "center";
+
+  screenQuizzElement.firstElementChild.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+
+function renderQuestions(question, questionNumber) {
+
+  boxQuizz.innerHTML += `
+  <div data-test="question" class="quizz-question unanswered-question">
+    <div data-test="question-title" class="question-header "
+    style="background-color: ${question.color};">
+      <h3 class="question-title" data-identifier="question">${question.title}</h3>
+    </div>
+    <div class="box-question-options">      
+    </div>
+  </div>
+  `;
+
+  const correctQuestionAnswers = [];
+
+  const boxOptions = boxQuizz.lastElementChild.querySelector(
+    ".box-question-options"
+  );
+  question.answers.sort(comparador).forEach((option, optionNumber) => {
+    boxOptions.innerHTML += `
+    <div data-test="answer" class="question-option ${questionNumber} " onclick="selectOptionQuestion(this)" data-identifier="answer">
+      <img class="option-img" src=${option.image} alt="Imagem não suportada ou indisponível" />
+      <span data-test="answer-text" class="option-text">${option.text}</span>
+    </div>
+    `;
+    if (option.isCorrectAnswer) {
+      correctQuestionAnswers.push(optionNumber);
+    }
+  });
+  correctQuizzAnswers.push(correctQuestionAnswers);
+}
+
+function preLoadResult() {
+  boxQuizz.innerHTML += `
+  <div class="box-answer hide">
+    <div class="quizz-answer">
+      <div data-test="level-title" class="answer-header">
+        <h3 class="answer-title">
+        </h3>
+      </div>
+      <div class="answer-body">
+        <img data-test="level-title" src="" alt="Imagem não suportada ou indisponível" class="answer-img" />
+        <span data-test="level-text" class="answer-text">
+        </span>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button data-test="restart" onclick="loadQuizzScreen()" class="buzzquizz-button btn-restart">Reiniciar Quizz</button>
+      <button data-test="go-home" onclick="backToHome()" class="buzzquizz-link">Voltar pra home</button>
+    </div>
+  </div>
+  `;
+}
+
+function renderResult() {
+  let userLevel = 0;
+
+  quizzToAnswer.levels.forEach((level, index) => {
+    if (scoreQuizz >= level.minValue) {
+      userLevel = index;
+    }
+  });
+
+  document.querySelector(".answer-title").innerHTML = `
+    <span class="answer-level-score" data-identifier="quizz-result">${scoreQuizz}</span>% de acerto:
+    <span class="answer-level-text">${quizzToAnswer.levels[userLevel].title}</span>  
+    `;
+  document.querySelector(".answer-img").src =
+    quizzToAnswer.levels[userLevel].image;
+  document.querySelector(".answer-text").innerHTML =
+    quizzToAnswer.levels[userLevel].text;
+}
+
+function selectOptionQuestion(elementOption) {
+  const boxOptions = elementOption.parentElement;
+  const elementQuestion = boxOptions.parentElement;
+
+  if (flagScroll) {
+    flagScroll = false;
+    clearInterval(idDelayScroll);
+  }
+
+  if (elementQuestion.classList.contains("answered-question")) {
+    return;
+  } else {
+    elementQuestion.classList.remove("unanswered-question");
+    elementQuestion.classList.add("answered-question");
+    numberOfQuestionsAnswered++;
+
+    let questionSelected;
+    for (let i = 0; i < numberOfQuestions; i++) {
+      if (elementOption.classList.contains(i)) {
+        questionSelected = i;
+        break;
+      }
+    }
+
+    const optionsElements = boxOptions.querySelectorAll(".question-option");
+    optionsElements.forEach((element, optionNumber) => {
+
+      if (correctQuizzAnswers[questionSelected].includes(optionNumber)) {
+        element.classList.add("right-option");
+        if (element === elementOption) {
+          scoreQuizz++;
+        }
+      } else {
+        element.classList.add("wrong-option");
+      }
+
+      if (element !== elementOption) {
+        element.classList.add("unselected-option");
+      }
+    });
+
+    let elementToScroll;
+
+
+    if (numberOfQuestionsAnswered === numberOfQuestions) {
+      scoreQuizz = Math.round((scoreQuizz / numberOfQuestions) * 100);
+
+      renderResult();
+      const elementResult = document.querySelector(".box-answer");
+      elementResult.classList.remove("hide");
+      elementToScroll = elementResult;
+    } else {
+      elementToScroll = document.querySelector(".unanswered-question");
+    }
+    idDelayScroll = setInterval(showNextQuestion, 2000, elementToScroll);
+    flagScroll = true;
+  }
+}
+
+function showNextQuestion(elementToShow) {
+  elementToShow.scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+  flagScroll = false;
+  clearInterval(idDelayScroll);
+}
